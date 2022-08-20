@@ -17,11 +17,20 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
 }
 
 function validateInput(testInput) {
-   
+
+   if(isNaN(testInput)){
+     return "Not a Number"
+   }
+    else if(typeof testInput === 'string' && testInput.length === 0){
+     return "Empty"
+   }
+   else if(!isNaN(testInput)){
+     return "Is a Number"
+   }
 }
 
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
-   
+
 }
 
 async function myFetch() {
@@ -39,5 +48,5 @@ function pickPlanet(planets) {
 module.exports.addDestinationInfo = addDestinationInfo;
 module.exports.validateInput = validateInput;
 module.exports.formSubmission = formSubmission;
-module.exports.pickPlanet = pickPlanet; 
+module.exports.pickPlanet = pickPlanet;
 module.exports.myFetch = myFetch;
