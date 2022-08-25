@@ -29,9 +29,24 @@ function validateInput(testInput) {
    }
 }
 
-function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
+function formSubmission(document, pilotName, copilotName, fuelLevel, cargoLevel) {
+          let form = document.querySelector("form");
 
-}
+         if (validateInput(pilotName.value) === "Empty" || validateInput(copilotName.value) === "Empty" || validateInput(fuelLevel.value) === "Empty" || validateInput(cargoLevel.value) === "Empty") {
+            alert("All fields are required!");
+         }
+         else if(validateInput(pilotName.value) === "Is a Number" || validateInput(copilotName.value) === "Is a Number"){
+           alert("Enter only letters");
+
+          }
+         else if(validateInput(fuelLevel.value) === "Not a Number" || validateInput(cargoLevel.value) === "Not a Number"){
+           alert("Enter only Numbers");
+         }
+         else{
+           alert("All type are correct");
+         }
+      }
+
 
 async function myFetch() {
     let planetsReturned;
@@ -45,8 +60,8 @@ async function myFetch() {
 function pickPlanet(planets) {
 }
 
-module.exports.addDestinationInfo = addDestinationInfo;
-module.exports.validateInput = validateInput;
-module.exports.formSubmission = formSubmission;
-module.exports.pickPlanet = pickPlanet;
-module.exports.myFetch = myFetch;
+// module.exports.addDestinationInfo = addDestinationInfo;
+// module.exports.validateInput = validateInput;
+// module.exports.formSubmission = formSubmission;
+// module.exports.pickPlanet = pickPlanet;
+// module.exports.myFetch = myFetch;
