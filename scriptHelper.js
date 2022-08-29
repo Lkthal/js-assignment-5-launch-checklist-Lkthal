@@ -3,18 +3,24 @@ require('isomorphic-fetch');
 
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
    // Here is the HTML formatting for our mission target div.
-   /*
-                <h2>Mission Destination</h2>
-                <ol>
-                    <li>Name: </li>
-                    <li>Diameter: </li>
-                    <li>Star: ${star}</li>
-                    <li>Distance from Earth: </li>
-                    <li>Number of Moons: </li>
-                </ol>
-                <img src="">
-   */
-}
+   const missionTarget = document.getElementById("missionTarget");
+
+   missionTarget.innerHTML =
+   `
+         <h2>Mission Destination</h2>
+         <ol>
+              <li>Name: ${name}</li>
+              <li>Diameter: ${diameter}</li>
+              <li>Star: ${star}</li>
+              <li>Distance from Earth: ${distance}</li>
+              <li>Number of Moons: ${moons}</li>
+          </ol>
+          <img src="${imageUrl}">
+          `
+
+
+};
+
 
 function validateInput(testInput) {
 
@@ -43,25 +49,60 @@ function formSubmission(document, pilotName, copilotName, fuelLevel, cargoLevel)
            alert("Enter only Numbers");
          }
          else{
-           alert("All type are correct");
+           document.getElementById("faultyItems").style.visibility = "visible";
+           document.getElementById("pilotStatus").innerHTML = pilotName.value;
+           document.getElementById("copilotStatus").innerHTML = copilotName.value;
+           if(fuelLevel.value <= 10000 || cargoLevel.value >= 10000){
+             document.getElementById("faultyItems").style.visibility = "visible";
+             document.getElementById("launchStatus").innerHTML = "Shuttle not ready for launch";
+             document.getElementById("launchStatus").style.color = "rgb(199, 37, 78)";
+             if(fuelLevel.value <= 10000){
+               document.getElementById("fuelStatus").innerHTML = "Fuel level too low for launch";
+             }
+             else if(cargoLevel.value >= 10000){
+               document.getElementById("cargoStatus").innerHTML = "Cargo mass too heavy for launch";
+             }
+             else{
+               document.getElementById("fuelStatus").innerHTML = "Fuel level too low for launch";
+               document.getElementById("cargoStatus").innerHTML = "Cargo mass too heavy for launch";
+             }
+           }
+           else{
+              document.getElementById("launchStatus").innerHTML = "Shuttle is ready for launch";
+              document.getElementById("launchStatus").style.color = "rgb(65, 159, 106)";
+            }
          }
       }
 
 
-async function myFetch() {
-    let planetsReturned;
+      async function myFetch() {
+        let planetsReturned;
+        await fetch("https://handlers.education.launchcode.org/static/planets.json").then( function(response) {
+          response.json().then(function(planetsReturned){
+            const missionTarget = document.getElementById('missionTarget');
+            const index = Math.floor(Math.random() * planetsReturned.length - 1);
 
-    planetsReturned = await fetch().then( function(response) {
+            missionTarget.innerHTML = `
+            <ol>
+            <li>Name: ${planetsReturned[index].name}</li>
+            <li>Diameter: ${planetsReturned[index].diameter}</li>
+            <li>Star: ${planetsReturned[index].star}</li>
+            <li>Distance from Earth: ${planetsReturned[index].distance}</li>
+            <li>Number of Moons: ${planetsReturned[index].moons}</li>
+            </ol>
+            <img src="${planetsReturned[index].image}">
+            `;
+          });
         });
+      }
 
-    return planetsReturned;
-}
+// function pickPlanet(planets) {
+//
+//     const index = Math.floor(Math.random() * json.length - 1);
+// };
 
-function pickPlanet(planets) {
-}
-
-// module.exports.addDestinationInfo = addDestinationInfo;
-// module.exports.validateInput = validateInput;
-// module.exports.formSubmission = formSubmission;
-// module.exports.pickPlanet = pickPlanet;
-// module.exports.myFetch = myFetch;
+module.exports.addDestinationInfo = addDestinationInfo;
+module.exports.validateInput = validateInput;
+module.exports.formSubmission = formSubmission;
+module.exports.pickPlanet = pickPlanet;
+module.exports.myFetch = myFetch;
